@@ -99,14 +99,8 @@ def update_picture(id):
 ######################################################################
 @app.route("/picture/<int:id>", methods=["DELETE"])
 def delete_picture(id):
-    if data:
-        pos = None
-        for index, pic in enumerate(data):
-            if pic.get("id") == id:
-                pos = index
-        if pos is not None:
-            data.pop(pos)
-            return {}, 204
-        return {"message": "picture not found"}, 404
-        
-    return {"message": "Internal server error"}, 500
+    for picture in data:
+        if picture["id"] == id:
+            data.remove(picture)
+            return "", 204
+    return {"message": "picture not found"}, 404
