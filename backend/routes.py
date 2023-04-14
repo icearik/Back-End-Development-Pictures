@@ -82,11 +82,31 @@ def create_picture():
 
 @app.route("/picture/<int:id>", methods=["PUT"])
 def update_picture(id):
-    pass
+    if data:
+        new_picture = request.json
+        new_id = new_picture.get('id')
+        for pic in data:
+            if pic['id']==new_id and new_picture.get('pic_url'):
+                pic.update(new_picture) 
+                return new_picture, 200
+        return {"message": "picture not found"}, 404
+
+    return {"message": "Internal server error"}, 500
+
 
 ######################################################################
 # DELETE A PICTURE
 ######################################################################
 @app.route("/picture/<int:id>", methods=["DELETE"])
 def delete_picture(id):
-    pass
+    if data:
+        pos = None
+        for index, pic in enumerate(data):
+            if pic.get("id") == id:
+                pos = index
+        if pos is not None:
+            data.pop(pos)
+            return {}, 204
+        return {"message": "picture not found"}, 404
+        
+    return {"message": "Internal server error"}, 500
